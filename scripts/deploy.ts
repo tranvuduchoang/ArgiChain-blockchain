@@ -4,9 +4,25 @@ async function main() {
   console.log("🚀 Starting AgriChain contracts deployment...");
 
   // Get the deployer account
-  const [deployer] = await ethers.getSigners();
+  const signers = await ethers.getSigners();
+  if (signers.length === 0) {
+    throw new Error("❌ No signers available. Please set PRIVATE_KEY in .env file");
+  }
+  
+  const [deployer] = signers;
+  if (!deployer) {
+    throw new Error("❌ Deployer account not found. Please check your PRIVATE_KEY in .env file");
+  }
+  
   console.log("📝 Deploying contracts with account:", deployer.address);
-  console.log("💰 Account balance:", (await ethers.provider.getBalance(deployer.address)).toString());
+  
+  const balance = await ethers.provider.getBalance(deployer.address);
+  console.log("💰 Account balance:", ethers.formatEther(balance), "ETH");
+  
+  // Check if account has sufficient balance
+  if (balance === 0n) {
+    throw new Error("❌ Insufficient balance. Please add some ETH to your account for gas fees");
+  }
 
   // Deploy AgriChainToken
   console.log("\n📦 Deploying AgriChainToken...");

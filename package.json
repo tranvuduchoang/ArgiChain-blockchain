@@ -17,7 +17,8 @@
     "console": "hardhat console",
     "flatten": "hardhat flatten",
     "size": "hardhat size-contracts",
-    "gas": "REPORT_GAS=true hardhat test"
+    "gas": "REPORT_GAS=true hardhat test",
+    "create-wallet": "node scripts/create-wallet.js"
   },
   "keywords": [
     "agrichain",
