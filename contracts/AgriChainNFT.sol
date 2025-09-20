@@ -32,6 +32,12 @@ contract AgriChainNFT is ERC1155, Ownable, Pausable, ReentrancyGuard {
         uint256 amount,
         string reason
     );
+    event NFTBurned(
+        uint256 indexed tokenId,
+        uint256 amount,
+        address indexed user,
+        address indexed supplier
+    );
     event MetadataUpdated(uint256 indexed tokenId, string newMetadata);
     event SupplierAuthorized(address indexed supplier);
     event SupplierRevoked(address indexed supplier);
@@ -232,6 +238,33 @@ contract AgriChainNFT is ERC1155, Ownable, Pausable, ReentrancyGuard {
      */
     function setContractURI(string memory _contractURI) external onlyOwner {
         contractURIValue = _contractURI;
+    }
+
+    /**
+     * @dev Burn NFT after delivery confirmation
+     * @param tokenId ID of the token to burn
+     * @param amount Amount of tokens to burn
+     * @param signature User signature for verification
+     * @param user User address who confirmed delivery
+     */
+    function burnNFT(
+        uint256 tokenId,
+        uint256 amount,
+        bytes32 signature,
+        address user
+    ) external onlyAuthorizedSupplier nonReentrant {
+        require(balanceOf(user, tokenId) >= amount, "Insufficient balance");
+        require(signature != bytes32(0), "Invalid signature");
+        
+        // Verify signature (simplified for demo)
+        // In production, you would verify the signature properly
+        bytes32 messageHash = keccak256(abi.encodePacked(tokenId, amount, user, block.timestamp));
+        require(messageHash == signature, "Invalid signature");
+        
+        // Burn the NFT
+        _burn(user, tokenId, amount);
+        
+        emit NFTBurned(tokenId, amount, user, msg.sender);
     }
 
     /**
