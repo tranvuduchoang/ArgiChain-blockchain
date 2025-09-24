@@ -1,0 +1,11 @@
+{
+  "network": "bsctestnet",
+  "chainId": 97,
+  "deployer": "0x72654b545038460716F13f9f30838136D68F5a41",
+  "contracts": {
+    "AgriChainToken": "0x0a5123a377A87321975578ED3C8D3336eF67F28a",
+    "AgriChainNFT": "0x739ECFc4a3C66e1E0b14B4581C5dA3341586a4E4",
+    "AgriChainMarketplace": "0xf88559b87f94FF07c6c4297E7D04ab10573e9d62"
+  },
+  "deployedAt": "2025-09-24T03:39:16.217Z"
+}
